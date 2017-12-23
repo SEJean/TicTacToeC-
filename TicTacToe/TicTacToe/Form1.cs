@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Diagnostics;
 namespace TicTacToe
 {
@@ -18,12 +17,13 @@ namespace TicTacToe
     public partial class Form1 : Form
     {
         const float PEN_SIZE = 1.0f;
-
+        
+        private bool m_MoveDone = false;
 
         private Pen m_GridPen;
-        
-        private bool m_XToPlay = false;
-        private bool m_MoveDone = false;
+        private GameManager m_TicTacToeGame;
+
+
 
         public Pen Pen
         {
@@ -38,6 +38,7 @@ namespace TicTacToe
             InitializeComponent();
 
             Pen = new Pen(Color.Black, PEN_SIZE);
+            m_TicTacToeGame = new GameManager();
             pnlGrid.Width = 182;
             pnlGrid.Height = 182;
 
@@ -57,6 +58,7 @@ namespace TicTacToe
                     pnl.Location = p;
                     pnlGrid.Controls.Add(pnl);
                     p.X = p.X + 60;
+                    m_TicTacToeGame.GameSquares.Add(pnl, new Point(i, j));
                 }
                 p.X = 1;
                 p.Y = p.Y + 60;
@@ -65,9 +67,12 @@ namespace TicTacToe
 
         private void SquareClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Square Clicked");
+            Debug.WriteLine("Coord :    X : " + m_TicTacToeGame.GameSquares[((Panel)sender)].X + " Y : " + m_TicTacToeGame.GameSquares[((Panel)sender)].Y);
+            //Debug.WriteLine(m_TicTacToeGame.GameSquares.Count);
+
+            m_TicTacToeGame.Play(sender);
             DrawSymbol(sender);
-          
+            ((Panel)sender).Click -= SquareClicked;
         }
 
         private void DrawSymbol(object p_Square)
@@ -85,7 +90,7 @@ namespace TicTacToe
 
             if(m_MoveDone)
             {
-                if (m_XToPlay)
+                if (m_TicTacToeGame.X_Turn)
                 {
                     g.DrawLine(Pen, 0, 0, 60, 60);
                     g.DrawLine(Pen, 0, 60, 60, 0);
@@ -95,6 +100,8 @@ namespace TicTacToe
                     //g.DrawEllipse(Pen, currentPanel.Width / 2, currentPanel.Height / 2, 40, 40);
                     g.DrawEllipse(Pen, 0, 0, 59, 59);
                 }
+
+                m_TicTacToeGame.X_Turn = !m_TicTacToeGame.X_Turn;
                 m_MoveDone = false;
             }
 
