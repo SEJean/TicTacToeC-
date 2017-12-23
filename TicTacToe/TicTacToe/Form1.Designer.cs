@@ -109,6 +109,7 @@
             this.btnReplay.TabIndex = 2;
             this.btnReplay.Text = "Replay";
             this.btnReplay.UseVisualStyleBackColor = true;
+            this.btnReplay.Click += new System.EventHandler(this.btnReplay_Click);
             // 
             // lblStatus
             // 

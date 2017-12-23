@@ -10,10 +10,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 namespace TicTacToe
 {
-
-    
-
-
     public partial class Form1 : Form
     {
         const float PEN_SIZE = 1.0f;
@@ -39,13 +35,23 @@ namespace TicTacToe
 
             Pen = new Pen(Color.Black, PEN_SIZE);
             m_TicTacToeGame = new GameManager();
+            m_TicTacToeGame.HudManager.GameStatus = lblStatus;
+            m_TicTacToeGame.HudManager.XScore = lblXScore;
+            m_TicTacToeGame.HudManager.OScore = lblOScore;
+
             pnlGrid.Width = 182;
             pnlGrid.Height = 182;
 
+            Init();
           
+            
+        }
+
+        private void Init()
+        {
             Point p = new Point(1, 1);
 
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
@@ -67,12 +73,14 @@ namespace TicTacToe
 
         private void SquareClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Coord :    X : " + m_TicTacToeGame.GameSquares[((Panel)sender)].X + " Y : " + m_TicTacToeGame.GameSquares[((Panel)sender)].Y);
+            //Debug.WriteLine("Coord :    X : " + m_TicTacToeGame.GameSquares[((Panel)sender)].X + " Y : " + m_TicTacToeGame.GameSquares[((Panel)sender)].Y);
             //Debug.WriteLine(m_TicTacToeGame.GameSquares.Count);
-
-            m_TicTacToeGame.Play(sender);
-            DrawSymbol(sender);
-            ((Panel)sender).Click -= SquareClicked;
+            if( !m_TicTacToeGame.IsGameWon)
+            {
+                m_TicTacToeGame.Play(sender);
+                DrawSymbol(sender);
+                ((Panel)sender).Click -= SquareClicked;
+            }
         }
 
         private void DrawSymbol(object p_Square)
@@ -115,6 +123,24 @@ namespace TicTacToe
             graphic.DrawRectangle(Pen, 0, 0, pnlGrid.Width - PEN_SIZE, pnlGrid.Height - PEN_SIZE);
         }
 
-   
+        private void btnReplay_Click(object sender, EventArgs e)
+        {
+            foreach(Panel pnl in m_TicTacToeGame.GameSquares.Keys)
+            {
+                pnl.Click -= SquareClicked;
+                pnl.Click += SquareClicked;
+                pnl.Invalidate();
+            }
+
+            
+            m_TicTacToeGame.Data = new char[3, 3] { { ' ',' ',' ' },
+                                                    { ' ',' ',' ' },
+                                                    { ' ',' ',' ' },
+                                                  };
+            m_TicTacToeGame.IsGameWon = false;
+            m_TicTacToeGame.X_Turn = true;
+            m_TicTacToeGame.TurnLeft = 9;
+            m_TicTacToeGame.HudManager.SetStatus("Status");
+        }
     }
 }
