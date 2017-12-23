@@ -67,7 +67,7 @@ namespace TicTacToe
 
         private void SquareClicked(object sender, EventArgs e)
         {
-            //Debug.WriteLine("Coord :    X : " + m_TicTacToeGame.GameSquares[((Panel)sender)].X + " Y : " + m_TicTacToeGame.GameSquares[((Panel)sender)].Y);
+            Debug.WriteLine("Coord :    X : " + m_TicTacToeGame.GameSquares[((Panel)sender)].X + " Y : " + m_TicTacToeGame.GameSquares[((Panel)sender)].Y);
             //Debug.WriteLine(m_TicTacToeGame.GameSquares.Count);
 
             m_TicTacToeGame.Play(sender);
