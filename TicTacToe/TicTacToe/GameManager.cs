@@ -66,7 +66,7 @@ namespace TicTacToe
 
             if(m_IsGameWon)
             {
-                //Debug.WriteLine("Won");
+                Debug.WriteLine("Won");
                 //Tell the hudManager to Update
             }
             //Debugging log
