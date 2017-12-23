@@ -72,6 +72,7 @@ namespace TicTacToe
 
             m_TicTacToeGame.Play(sender);
             DrawSymbol(sender);
+            ((Panel)sender).Click -= SquareClicked;
         }
 
         private void DrawSymbol(object p_Square)
