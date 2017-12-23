@@ -21,11 +21,14 @@ namespace TicTacToe
         private Dictionary<Panel,Point> m_GameSquares;
 
         private bool m_IsXPlayerTurn;
+        private bool m_IsGameWon;
         private char[,] m_GridData;
-
+        private int m_PlayerXScore = 0;
+        private int m_PlayerYScore = 0;
 
         public GameManager()
         {
+            m_IsGameWon = false;
             m_IsXPlayerTurn = true;
             m_GridData = new char[3, 3] { { ' ',' ',' ' },
                                           { ' ',' ',' ' },
@@ -59,6 +62,13 @@ namespace TicTacToe
                 m_GridData[positionInGrid.X, positionInGrid.Y] = PLAYER_O;
             }
 
+            m_IsGameWon = CheckForVictory();
+
+            if(m_IsGameWon)
+            {
+                Debug.WriteLine("Won");
+                //Tell the hudManager to Update
+            }
             //Debugging log
             //for(int i = 0; i < 3; i++)
             //{
@@ -68,6 +78,32 @@ namespace TicTacToe
             //    }
             //    Debug.WriteLine("");
             //}
+        }
+
+        private bool CheckForVictory()
+        {
+            char symbolToCheck = (m_IsXPlayerTurn) ? 'X' : 'O';
+            return CheckForLines(symbolToCheck) || CheckForColumns(symbolToCheck) || CheckForDiags(symbolToCheck); 
+        }
+
+        private bool CheckForLines(char p_Symbol)
+        {
+            return m_GridData[0, 0] == p_Symbol && m_GridData[0, 1] == p_Symbol && m_GridData[0, 2] == p_Symbol ||
+                   m_GridData[1, 0] == p_Symbol && m_GridData[1, 1] == p_Symbol && m_GridData[1, 2] == p_Symbol ||
+                   m_GridData[2, 0] == p_Symbol && m_GridData[2, 1] == p_Symbol && m_GridData[2, 2] == p_Symbol;
+        }
+
+        private bool CheckForColumns(char p_Symbol)
+        {
+            return m_GridData[0, 0] == p_Symbol && m_GridData[1, 0] == p_Symbol && m_GridData[2, 0] == p_Symbol ||
+                   m_GridData[1, 0] == p_Symbol && m_GridData[1, 1] == p_Symbol && m_GridData[1, 2] == p_Symbol ||
+                   m_GridData[2, 0] == p_Symbol && m_GridData[2, 1] == p_Symbol && m_GridData[2, 2] == p_Symbol;
+        }
+
+        private bool CheckForDiags(char p_Symbol)
+        {
+            return m_GridData[0, 0] == p_Symbol && m_GridData[1, 1] == p_Symbol && m_GridData[2, 2] == p_Symbol ||
+                   m_GridData[2, 0] == p_Symbol && m_GridData[1, 1] == p_Symbol && m_GridData[0, 2] == p_Symbol;
         }
     }
 }
