@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.pnlGrid = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // pnlGrid
+            // 
+            this.pnlGrid.Location = new System.Drawing.Point(68, 94);
+            this.pnlGrid.Name = "pnlGrid";
+            this.pnlGrid.Size = new System.Drawing.Size(239, 246);
+            this.pnlGrid.TabIndex = 0;
+            this.pnlGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGrid_Paint);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(576, 434);
+            this.Controls.Add(this.pnlGrid);
+            this.Name = "Form1";
+            this.Text = "TicTacToe";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel pnlGrid;
     }
 }
 
